@@ -2,6 +2,7 @@ package com.example.springsecurityconfig.config;
 
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -18,16 +19,20 @@ public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
+
+    @Autowired
+    private AuthEntryPointJwt unauthorizedHandler;
+
      @Bean
     public SecurityFilterChain securityFilterChain (HttpSecurity http) throws Exception{
          http
                  .csrf()
                  .disable()
-                 .authorizeHttpRequests()
-                 .requestMatchers("/api/auth/**")//urls qui n'ont pas besoin d'authentification
-                 .permitAll()
-                 .requestMatchers("/users/list")
-                 .hasAnyRole("ADMIN")
+                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                 .authorizeRequests()
+                 .antMatchers("/api/auth/**").permitAll()
+                 .antMatchers("/users/list").hasAnyRole("ADMIN")
                  .anyRequest()
                  .authenticated()
                  .and()

@@ -13,14 +13,11 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -37,12 +34,12 @@ public class AuthController {
     private final JwtService jwtService;
     private final AccountService accountService;
     private final PasswordEncoder passwordEncoder;
-    @PostMapping("/login")
-    public ResponseEntity<?> userLogin(@RequestBody AppUser appUser){
+    @GetMapping("/login")
+    public ResponseEntity<?> userLogin(@RequestBody LoginRequest loginRequest){
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        appUser.getUsername(),
-                        appUser.getPassword())
+                        loginRequest.getEmail(),
+                        loginRequest.getPassword())
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtService.generateJwtToken(authentication);
@@ -52,6 +49,7 @@ public class AuthController {
         AuthResponse authResponse = new AuthResponse();
         authResponse.setToken(token);
         authResponse.setRoles(roles);
+        authResponse.setEmail(user.getUsername());
         return ResponseEntity.ok(authResponse);
     }
 
