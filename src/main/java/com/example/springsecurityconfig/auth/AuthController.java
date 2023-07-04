@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
@@ -34,8 +35,8 @@ public class AuthController {
     private final JwtService jwtService;
     private final AccountService accountService;
     private final PasswordEncoder passwordEncoder;
-    @GetMapping("/login")
-    public ResponseEntity<?> userLogin(@RequestBody LoginRequest loginRequest){
+    @PostMapping("/login")
+    public ResponseEntity<?> userLogin(LoginRequest loginRequest){
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequest.getEmail(),
