@@ -36,19 +36,25 @@ public class AuthController {
     private final AccountService accountService;
     private final PasswordEncoder passwordEncoder;
     @PostMapping("/login")
-    public ResponseEntity<?> userLogin(LoginRequest loginRequest){
+    public ResponseEntity<?> userLogin(@RequestBody LoginRequest loginRequest){
+        System.out.println(loginRequest.getPassword());
+        System.out.println(loginRequest.getEmail());
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequest.getEmail(),
                         loginRequest.getPassword())
-        );
+        );System.out.println("ici1");
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtService.generateJwtToken(authentication);
-        UserDetails user = (UserDetails) authentication.getPrincipal();
+        System.out.println("ici");
+        AppUser user = (AppUser) authentication.getPrincipal();
+        System.out.println("ici 9");
         List<String> roles = user.getAuthorities().stream()
                 .map(auth -> auth.getAuthority()).collect(Collectors.toList());
         AuthResponse authResponse = new AuthResponse();
         authResponse.setToken(token);
+        authResponse.setFirstName(user.getFirstName());
+        authResponse.setLastName(user.getLastName());
         authResponse.setRoles(roles);
         authResponse.setEmail(user.getUsername());
         return ResponseEntity.ok(authResponse);
@@ -62,6 +68,8 @@ public class AuthController {
         AppUser appUser = new AppUser();
         Set<AppRole> roles = new HashSet<>();
         appUser.setEmail(signUpRequest.getEmail());
+        appUser.setFirstName(signUpRequest.getFirstName());
+        appUser.setLastName(signUpRequest.getLastName());
         appUser.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
         String [] roleArr = signUpRequest.getRoles();
         if (roleArr == null){

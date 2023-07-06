@@ -23,11 +23,10 @@ public class SpringSecurityConfigApplication {
 //            accountService.addNewRole(new AppRole(null, "USER"));
 //            accountService.addNewRole(new AppRole(null, "ADMIN"));
 //
-//            accountService.addNewUser(new AppUser(null, "cheikh@tall.sn", "password", new HashSet<>()));
-//            accountService.addNewUser(new AppUser(null, "admin@tall.sn", "password", new HashSet<>()));
+//            accountService.addNewUser(new AppUser(null, "djibril@kandji.sn", "password", new HashSet<>()));
 //
-//            accountService.addRoleToUser("cheikh@tall.sn", "USER");
-//            accountService.addRoleToUser("admin@tall.sn", "ADMIN");
+//
+//            accountService.addRoleToUser("djibril@kandji.sn", "USER");
 //        };
 //    }
 
