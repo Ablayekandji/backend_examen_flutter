@@ -12,7 +12,7 @@ public class PointageController {
     @Autowired
     private PointageService pointageService;
     @PostMapping("")
-    public ResponseEntity<Boolean> setOpened(@RequestParam("email") String email){
+    public ResponseEntity<Boolean> pointage(@RequestParam("email") String email){
         return ResponseEntity.ok(pointageService.addPointage(email));
     }
 }
