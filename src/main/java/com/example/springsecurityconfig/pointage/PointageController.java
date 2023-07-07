@@ -15,4 +15,10 @@ public class PointageController {
     public ResponseEntity<Boolean> pointage(@RequestParam("email") String email){
         return ResponseEntity.ok(pointageService.addPointage(email));
     }
+
+    @GetMapping("")
+    public ResponseEntity<?> listPointage(){
+        return ResponseEntity.ok(pointageService.listPointage());
+    }
+
 }

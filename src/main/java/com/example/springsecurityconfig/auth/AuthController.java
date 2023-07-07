@@ -36,7 +36,7 @@ public class AuthController {
     private final AccountService accountService;
     private final PasswordEncoder passwordEncoder;
     @PostMapping("/login")
-    public ResponseEntity<?> userLogin( LoginRequest loginRequest){
+    public ResponseEntity<?> userLogin(LoginRequest loginRequest){
         System.out.println(loginRequest.getPassword());
         System.out.println(loginRequest.getEmail());
         Authentication authentication = authenticationManager.authenticate(
