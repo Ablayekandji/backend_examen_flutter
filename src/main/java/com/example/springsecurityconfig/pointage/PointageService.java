@@ -17,6 +17,7 @@ public class PointageService {
     private PointageRepository pointageRepository;
 
     public boolean addPointage(String email){
+        System.out.println("sur pointage");
         AppUser user = userRepository.findByEmail(email).orElseThrow();
         if (user!=null){
             Pointage pointage = Pointage.builder()
